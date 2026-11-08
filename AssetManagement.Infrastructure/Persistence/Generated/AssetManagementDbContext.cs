@@ -36,6 +36,8 @@ public partial class AssetManagementDbContext : DbContext
 
     public virtual DbSet<Manufacturer> Manufacturers { get; set; }
 
+    public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -523,6 +525,29 @@ public partial class AssetManagementDbContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ManufacturerModifiedByNavigations)
                 .HasForeignKey(d => d.ModifiedBy)
                 .HasConstraintName("FK_Manufacturer_ModifiedBy");
+        });
+
+        modelBuilder.Entity<PasswordResetToken>(entity =>
+        {
+            entity.ToTable("PasswordResetToken");
+
+            entity.HasIndex(e => e.UserId, "IX_PasswordResetToken_UserId");
+
+            entity.HasIndex(e => e.TokenHash, "UX_PasswordResetToken_TokenHash").IsUnique();
+
+            entity.Property(e => e.CreatedAt)
+                .HasPrecision(3)
+                .HasDefaultValueSql("(sysutcdatetime())", "DF_PasswordResetToken_CreatedAt");
+            entity.Property(e => e.ExpiresAt).HasPrecision(3);
+            entity.Property(e => e.TokenHash)
+                .HasMaxLength(32)
+                .IsFixedLength();
+            entity.Property(e => e.UsedAt).HasPrecision(3);
+
+            entity.HasOne(d => d.User).WithMany(p => p.PasswordResetTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PasswordResetToken_UserId");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>

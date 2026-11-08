@@ -103,6 +103,16 @@ IF OBJECT_ID(N'dbo.CK_RefreshToken_ReplacedImpliesRevoked', N'C') IS NULL
     ALTER TABLE dbo.RefreshToken ADD CONSTRAINT CK_RefreshToken_ReplacedImpliesRevoked
         CHECK (ReplacedByTokenId IS NULL OR RevokedAt IS NOT NULL);
 
+/* ---- PasswordResetToken ------------------------------------------------------ */
+
+IF OBJECT_ID(N'dbo.CK_PasswordResetToken_ExpiresAfterCreated', N'C') IS NULL
+    ALTER TABLE dbo.PasswordResetToken ADD CONSTRAINT CK_PasswordResetToken_ExpiresAfterCreated
+        CHECK (ExpiresAt > CreatedAt);
+
+IF OBJECT_ID(N'dbo.CK_PasswordResetToken_UsedAfterCreated', N'C') IS NULL
+    ALTER TABLE dbo.PasswordResetToken ADD CONSTRAINT CK_PasswordResetToken_UsedAfterCreated
+        CHECK (UsedAt IS NULL OR UsedAt >= CreatedAt);
+
 /* ---- Category ---------------------------------------------------------------- */
 
 IF OBJECT_ID(N'dbo.CK_Category_NameEn_NotBlank', N'C') IS NULL

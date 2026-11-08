@@ -124,6 +124,23 @@ BEGIN
     );
 END;
 
+-- Forgot password. TokenHash is the raw SHA-256 of the token sent in the email
+-- link; the token itself is never stored. Single use (UsedAt) and short-lived.
+IF OBJECT_ID(N'dbo.PasswordResetToken', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.PasswordResetToken
+    (
+        PasswordResetTokenId bigint        NOT NULL IDENTITY(1, 1),
+        UserId               int           NOT NULL,
+        TokenHash            binary(32)    NOT NULL,
+        ExpiresAt            datetime2(3)  NOT NULL,
+        CreatedAt            datetime2(3)  NOT NULL CONSTRAINT DF_PasswordResetToken_CreatedAt DEFAULT (SYSUTCDATETIME()),
+        UsedAt               datetime2(3)  NULL,
+
+        CONSTRAINT PK_PasswordResetToken PRIMARY KEY CLUSTERED (PasswordResetTokenId)
+    );
+END;
+
 /* ----------------------------------------------------------------------------
    Admin-managed lookups (audit + soft delete + IsActive)
    ---------------------------------------------------------------------------- */

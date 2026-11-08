@@ -73,6 +73,13 @@ IF OBJECT_ID(N'dbo.FK_RefreshToken_ReplacedByTokenId', N'F') IS NULL
         FOREIGN KEY (ReplacedByTokenId) REFERENCES dbo.RefreshToken (RefreshTokenId)
         ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+/* ---- PasswordResetToken ------------------------------------------------------ */
+
+IF OBJECT_ID(N'dbo.FK_PasswordResetToken_UserId', N'F') IS NULL
+    ALTER TABLE dbo.PasswordResetToken ADD CONSTRAINT FK_PasswordResetToken_UserId
+        FOREIGN KEY (UserId) REFERENCES dbo.AppUser (AppUserId)
+        ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 /* ---- Category ---------------------------------------------------------------- */
 
 IF OBJECT_ID(N'dbo.FK_Category_CreatedBy', N'F') IS NULL

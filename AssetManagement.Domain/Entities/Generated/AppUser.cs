@@ -91,6 +91,8 @@ public partial class AppUser
 
     public virtual AppUser? ModifiedByNavigation { get; set; }
 
+    public virtual ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
+
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual Role Role { get; set; } = null!;
