@@ -63,6 +63,15 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.Refre
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.RefreshToken') AND name = N'IX_RefreshToken_UserId')
     CREATE INDEX IX_RefreshToken_UserId ON dbo.RefreshToken (UserId);
 
+/* ---- PasswordResetToken ---------------------------------------------------------- */
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.PasswordResetToken') AND name = N'UX_PasswordResetToken_TokenHash')
+    CREATE UNIQUE INDEX UX_PasswordResetToken_TokenHash ON dbo.PasswordResetToken (TokenHash);
+
+-- Used to invalidate a user's older unused tokens when a new one is requested.
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.PasswordResetToken') AND name = N'IX_PasswordResetToken_UserId')
+    CREATE INDEX IX_PasswordResetToken_UserId ON dbo.PasswordResetToken (UserId);
+
 /* ---- Admin-managed lookups ---------------------------------------------------- */
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE object_id = OBJECT_ID(N'dbo.Category') AND name = N'UX_Category_NameEn')
