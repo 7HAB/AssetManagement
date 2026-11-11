@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using AssetManagement.Infrastructure.Options;
 using AssetManagement.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,11 @@ namespace AssetManagement.Infrastructure
             // 4. Register the health check that tries to reach the database.
             services.AddHealthChecks()
                 .AddDbContextCheck<AssetManagementDbContext>("database");
+
+            services.AddOptions<JwtOptions>()
+                .BindConfiguration(JwtOptions.SectionName)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
 
             return services;
         }

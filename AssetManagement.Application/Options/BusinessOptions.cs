@@ -12,16 +12,4 @@ public sealed class BusinessOptions
     [Required]
     public string TimeZoneId { get; init; } = string.Empty;
 
-    [Required]
-    public string Audience { get; init; } = string.Empty;
-
-    [Required]
-    [MinLength(32)]
-    public string SigningKey { get; init; } = string.Empty;
-
-    [Range(1, 60)]
-    public string AccessTokenExpirationInMinutes { get; init; } = "15";
-
-    [Range(1, 30)]
-    public string RefreshTokenExpirationInDays { get; init; } = "7";
 }
