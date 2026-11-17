@@ -1,7 +1,10 @@
-﻿using AssetManagement.Application.Options;
+﻿using AssetManagement.Application.Abstractions;
+using AssetManagement.Application.Options;
+using AssetManagement.Application.Services;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AssetManagement.Application;
 
@@ -15,6 +18,8 @@ public static class DependencyInjection
             .Validate(o => TimeZoneInfo.TryFindSystemTimeZoneById(o.TimeZoneId, out _), 
                            $"{BusinessOptions.SectionName}: TimeZoneId is not a time zone known to this machine.")
             .ValidateOnStart();
+        services.TryAddSingleton(TimeProvider.System);
+        services.AddSingleton<IBusinessClock, BusinessClock>();
         return services;
     }
 }
