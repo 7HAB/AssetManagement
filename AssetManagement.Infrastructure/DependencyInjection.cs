@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
+using AssetManagement.Application.Abstractions.Persistence;
 using AssetManagement.Infrastructure.Interceptors;
 using AssetManagement.Infrastructure.Options;
 using AssetManagement.Infrastructure.Persistence;
+using AssetManagement.Infrastructure.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +39,10 @@ namespace AssetManagement.Infrastructure
                 options.UseSqlServer(connectionString);
                 options.AddInterceptors(serviceProvider.GetRequiredService<AuditInterceptor>());
             });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IAssetHistoryRepository, AssetHistoryRepository>();
 
             // 4. Register the health check that tries to reach the database.
             services.AddHealthChecks()
