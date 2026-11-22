@@ -10,8 +10,17 @@ namespace AssetManagement.Infrastructure.Persistence;
 
 internal sealed class UnitOfWork(AssetManagementDbContext dbContext) : IUnitOfWork
 {
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        => dbContext.SaveChangesAsync(cancellationToken);
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await dbContext.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (DbExceptionTranslator.Translate(ex) is { } translated)
+        {
+            throw translated;
+        }
+    }
 
     public async Task ExecuteInTransactionAsync(Func<CancellationToken, Task> work, CancellationToken cancellationToken = default)
     {

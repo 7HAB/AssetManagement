@@ -1,3 +1,4 @@
+using AssetManagement.API.ErrorHandling;
 using AssetManagement.API.Services;
 using AssetManagement.Application;
 using AssetManagement.Application.Abstractions;
@@ -14,9 +15,10 @@ builder.Services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddApiErrorHandling();
 var app = builder.Build();
-
+// Configure the HTTP request pipeline. ERROR HANDLING MUST BE FIRST, before any other middleware that can throw exceptions.
+app.UseApiErrorHandling();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
