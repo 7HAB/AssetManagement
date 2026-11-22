@@ -2,10 +2,8 @@ using AssetManagement.API.ErrorHandling;
 using AssetManagement.API.Services;
 using AssetManagement.Application;
 using AssetManagement.Application.Abstractions;
-using AssetManagement.Application.Validation;
 using AssetManagement.Infrastructure;
 
-using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
