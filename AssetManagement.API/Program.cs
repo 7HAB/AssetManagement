@@ -2,29 +2,37 @@ using AssetManagement.API.ErrorHandling;
 using AssetManagement.API.Services;
 using AssetManagement.Application;
 using AssetManagement.Application.Abstractions;
+using AssetManagement.Application.Validation;
 using AssetManagement.Infrastructure;
+
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ---------- 1. SERVICES (everything on builder.Services, BEFORE Build) ----------
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddApiErrorHandling();
+
+// Error handling: the specific handler MUST be registered before the catch-all.
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+builder.Services.AddApiErrorHandling();   // registers GlobalExceptionHandler (see note below)
+
 var app = builder.Build();
-// Configure the HTTP request pipeline. ERROR HANDLING MUST BE FIRST, before any other middleware that can throw exceptions.
+
+// ---------- 2. PIPELINE (middleware, AFTER Build) ----------
+// Error handling first, so it wraps everything below it.
 app.UseApiErrorHandling();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 
 app.UseAuthorization();
 

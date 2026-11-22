@@ -2,6 +2,8 @@
 using AssetManagement.Application.Options;
 using AssetManagement.Application.Services;
 
+using FluentValidation;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -20,6 +22,7 @@ public static class DependencyInjection
             .ValidateOnStart();
         services.TryAddSingleton(TimeProvider.System);
         services.AddSingleton<IBusinessClock, BusinessClock>();
+        services.AddValidatorsFromAssemblyContaining<ApplicationAssemblyMarker>();
         return services;
     }
 }

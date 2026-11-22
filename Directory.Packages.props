@@ -20,5 +20,7 @@
 
     <!-- Security fix: forces a patched version of a vulnerable transitive package (nothing calls it directly) -->
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
+<PackageVersion Include="FluentValidation" Version="12.2.0" />
+<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
   </ItemGroup>
 </Project>
