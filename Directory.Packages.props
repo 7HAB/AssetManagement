@@ -6,21 +6,18 @@
     <!-- Data access -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.14" />
-
     <!-- Dependency injection and options (Application layer) -->
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.14" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.14" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.14" />
-
     <!-- API -->
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.14" />
-
     <!-- Tooling: Scaffold-DbContext. Keep in step with EF Core above -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.14" />
-
     <!-- Security fix: forces a patched version of a vulnerable transitive package (nothing calls it directly) -->
+    <PackageVersion Include="Serilog.AspNetCore" Version="11.0.0" />
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
-<PackageVersion Include="FluentValidation" Version="12.2.0" />
-<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+    <PackageVersion Include="FluentValidation" Version="12.2.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
   </ItemGroup>
 </Project>
